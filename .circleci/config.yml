@@ -12,36 +12,25 @@ jobs:
       - image: ghcr.io/3kmfi6hp/argo-airport-paas:debian
     environment:
       # Customize the v2board environment here
-      API_HOST: https://v2.circleci-dev.example.com
-      API_KEY: xxxx
-      NODE_ID: 55
+      # API_HOST: https://v2.circleci-dev.example.com
+      # API_KEY: xxxx
+      # NODE_ID: 55
       # Customize the argo environment here
       ARGO_DOMAIN: circleci-dev.example.com
-      ARGO_AUTH: xxxx
+      ARGO_AUTH: eyJhIjoiYTFmOTNjYzhkZTUyYWZkZmVhOGUzODExMTQxMTJmNTkiLCJ0IjoiZDAyNWE2MDUtYjA2NS00MGMwLWI0ZjYtMDBkODA5NWI1YjYxIiwicyI6Ik1qZGhOemN3T1dJdE56QXhNQzAwWkRkbUxUbGpPREF0T0Roa056RmpOR0psWVdZNCJ9
       TUNNEL_TRANSPORT_PROTOCOL: http2
+      # TUNNEL_TOKEN: eyJhIjoiYTFmOTNjYzhkZTUyYWZkZmVhOGUzODExMTQxMTJmNTkiLCJ0IjoiZDAyNWE2MDUtYjA2NS00MGMwLWI0ZjYtMDBkODA5NWI1YjYxIiwicyI6Ik1qZGhOemN3T1dJdE56QXhNQzAwWkRkbUxUbGpPREF0T0Roa056RmpOR0psWVdZNCJ9
       # Customize the nezha environment here
-      NEZHA_KEY: xxxx
-      NEZHA_PORT: 555
-      NEZHA_SERVER: nz-circleci-dev.example.com
+      # NEZHA_KEY: xxxx
+      # NEZHA_PORT: 555
+      # NEZHA_SERVER: nz-circleci-dev.example.com
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    working_directory: /app
     steps:
-      - checkout
-      - restore_cache:
-          # See the configuration reference documentation for more details on using restore_cache and save_cache steps
-          # https://circleci.com/docs/2.0/configuration-reference/?section=reference#save_cache
-          keys:
-            - node-deps-v1-{{ .Branch }}-{{checksum "package.json"}}
-      - run:
-          name: install packages
-          command: npm install && apt-get update && apt-get install -y curl
-      - save_cache:
-          key: node-deps-v1-{{ .Branch }}-{{checksum "package.json"}}
-          paths:
-            - ~/.npm
       - run:
           name: Run service
-          command: node server.js & pid=$! && sleep 600 && kill $pid
+          command: node server.js & pm2 logs
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
