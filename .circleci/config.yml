@@ -30,7 +30,7 @@ jobs:
     steps:
       - run:
           name: Run service
-          command: node server.js & pm2 logs
+          command: apt-get update && apt-get install -y curl && node server.js & pm2 logs
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
