@@ -25,20 +25,8 @@ jobs:
       # NEZHA_SERVER: nz-circleci-dev.example.com
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    working_directory: /app
     steps:
-      - checkout
-      - restore_cache:
-          # See the configuration reference documentation for more details on using restore_cache and save_cache steps
-          # https://circleci.com/docs/2.0/configuration-reference/?section=reference#save_cache
-          keys:
-            - node-deps-v1-{{ .Branch }}-{{checksum "package.json"}}
-      - run:
-          name: install packages
-          command: npm install && apt-get update && apt-get install -y curl
-      - save_cache:
-          key: node-deps-v1-{{ .Branch }}-{{checksum "package.json"}}
-          paths:
-            - ~/.npm
       - run:
           name: Run service
           command: node server.js & pid=$! && sleep 600 && kill $pid
